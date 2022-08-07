@@ -70,12 +70,13 @@ function App() {
                 onClick={(evt) => setCity(evt.target.dataset.buttonId)}
               >
                 {e[0].toUpperCase() + e.substring(1)}
-                <button className="save-btn">
-                  <BsBookmarkHeart
-                    onClick={() => {
-                      setSave([e, ...save].splice(0, 4));
-                    }}
-                  />
+                <button
+                  className="save-btn"
+                  onClick={() => {
+                    setSave([e, ...save].splice(0, 4));
+                  }}
+                >
+                  <BsBookmarkHeart />
                 </button>
               </button>
             </li>
