@@ -1,10 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./App.css";
+import Card from "./components/Card/Card";
+import { AiOutlineDelete } from "react-icons/ai";
+
+import { BsBookmarkHeart } from "react-icons/bs";
 
 function App() {
   const [city, setCity] = useState(" ");
   const [weather, setWeather] = useState({});
+  const [used, setUsed] = useState([]);
+  const [save, setSave] = useState(
+    JSON.parse(window.localStorage.getItem("cites"))
+  );
 
   useEffect(() => {
     if (city !== " ") {
@@ -21,24 +29,95 @@ function App() {
     }
   }, [city]);
 
-  console.log(weather);
+  function deleteCity(item) {
+    let array = [];
+    save.forEach((el) => {
+      if (el !== item) {
+        array.push(el);
+      }
+    });
 
+    setSave(array);
+  }
+
+  window.localStorage.setItem("cites", JSON.stringify(save));
 
   return (
     <div className="App">
-      <input
-        type="text"
-        onKeyUp={(evt) => {
-          if (evt.code === "Enter") {
-            setCity(evt.target.value);
-          }
-        }}
-      />
+      <h1 className="site-title"> Hi🖐 I am your Weather app</h1>
 
-      <h1 className="cityName">{weather.name}</h1>
-      <p className="temp">
-        Temperature: <span className="temp__data">{weather?.main?.temp}</span>
-      </p>
+      <label>
+        <input
+          type="text"
+          onKeyUp={(evt) => {
+            if (evt.code === "Enter") {
+              setCity(evt.target.value);
+              setUsed([evt.target.value, ...used].splice(0, 5));
+              evt.target.value = "";
+            }
+          }}
+          placeholder="Search city ..."
+        />
+      </label>
+
+      <ul className="last-search">
+        {used.map((e) => {
+          return (
+            <li>
+              <button
+                className="search-btn"
+                data-button-id={e}
+                onClick={(evt) => setCity(evt.target.dataset.buttonId)}
+              >
+                {e[0].toUpperCase() + e.substring(1)}
+                <button className="save-btn">
+                  <BsBookmarkHeart
+                    onClick={() => {
+                      setSave([e, ...save].splice(0, 4));
+                    }}
+                  />
+                </button>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="inner">
+        {weather.name ? <Card data={weather} /> : null}
+
+        <div className="saved-box">
+          <h1 className="saved-title">Saved Cities</h1>
+          <ul className="saved-list">
+            {save.map((e) => {
+              return (
+                <li className="saved-item">
+                  <button
+                    className="saved-btn"
+                    data-button-id={e}
+                    onClick={(evt) => setCity(evt.target.dataset.buttonId)}
+                  >
+                    {e[0].toUpperCase() + e.substring(1)}
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => {
+                      deleteCity(e);
+                    }}
+                  >
+                    <AiOutlineDelete />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+
+      <div className="ad">
+        <h3>You may have your ad here </h3>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,8 @@
+body{
+
+  font-family: 'Arial',sans-serif;
+
+  background-image: url("./assets/images/nature.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
