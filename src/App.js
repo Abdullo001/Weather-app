@@ -61,7 +61,7 @@ function App() {
       </label>
 
       <ul className="last-search">
-        {used.map((e) => {
+        {used?.map((e) => {
           return (
             <li>
               <button
@@ -89,9 +89,9 @@ function App() {
         <div className="saved-box">
           <h1 className="saved-title">Saved Cities</h1>
           <ul className="saved-list">
-            {save.map((e) => {
+            {save?.map((e) => {
               return (
-                <li className="saved-item">
+                <li key={e} className="saved-item">
                   <button
                     className="saved-btn"
                     data-button-id={e}
