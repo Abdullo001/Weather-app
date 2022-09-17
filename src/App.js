@@ -7,15 +7,15 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { BsBookmarkHeart } from "react-icons/bs";
 
 function App() {
-  const [city, setCity] = useState(" ");
+  const [city, setCity] = useState("Tashkent");
   const [weather, setWeather] = useState({});
   const [used, setUsed] = useState([]);
   const [save, setSave] = useState(
-    JSON.parse(window.localStorage.getItem("cites"))
+    JSON.parse(window.localStorage.getItem("cites"))||[]
   );
 
   useEffect(() => {
-    if (city !== " ") {
+    if (city !== "") {
       axios
         .get(
           `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=25ccd97dd292e0ee187017a56a07c519&units=metric`
@@ -23,7 +23,7 @@ function App() {
         .then(function (response) {
           setWeather(response.data);
         })
-        .catch(function (error) {
+        .catch( (error)=> {
           console.log(error);
         });
     }
@@ -63,7 +63,7 @@ function App() {
       <ul className="last-search">
         {used?.map((e) => {
           return (
-            <li>
+            <li key={e}>
               <button
                 className="search-btn"
                 data-button-id={e}
